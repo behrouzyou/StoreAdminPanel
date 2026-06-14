@@ -1,26 +1,26 @@
-import  { useContext, useEffect } from "react";
-import Dashboard from "../../pages/dashboard/Dashboard";
+import { Navigate } from "react-router-dom";
+import AdminContextContainer from "../../context/adminLayoutContext";
+import { useIsLogin } from "../../hook/authHook";
+import Content from "../../pages/Content";
 import Navbar from "./navbar/Index";
 import Sidebar from "./sidebar/Index";
-import { AdminContext } from "../../context/adminLayoutContext";
 
 const Index = () => {
-  const {showSidebar} = useContext(AdminContext)
-  useEffect(()=>{
-    // require('../../assets/js/toggleSidebar')
-    // toggleSidebar();
-  },[])
+  const [loading, isLogin] =useIsLogin()
   return (
-
-      <div>
-        <Navbar />
-        <Sidebar />
-        <section id="content_section"
-        className={`bg-light py-2 px-3 ${showSidebar ? "with_sidebar" : null}`}>
-          <Dashboard/>
-        </section>
-      </div>
-
+    <AdminContextContainer>
+      {loading ? (
+        <h1 className="text-center waiting_center">لطفا صبر کنید...</h1>
+      ) : isLogin ? (
+        <div>
+          <Content />
+          <Navbar />
+          <Sidebar />
+        </div>
+      ) : (
+        <Navigate to={"/auth/login"} />
+      )}
+    </AdminContextContainer>
   );
 };
 

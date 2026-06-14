@@ -8,15 +8,52 @@
 }
 
 body{
-    background: url(/assets/images/body_back4.jpg) repeat;
+    background: url(/public/assets/images/body_back4.jpg) no-repeat;
+    background-size: cover;
 }
 
 *{
     font-family: "BYekan";
     direction: rtl;
     text-align: right;
-    text-decoration: none;
     /* box-sizing: content-box */
+}
+a{
+    text-decoration: none !important;
+}
+
+
+.waiting_center{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation-name: opacityChange;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+}
+@keyframes opacityChange {
+    0%   {opacity: 1;}
+    50%  {opacity: 0.5;}
+    100% {opacity: 1;}
+}
+
+.modal-backdrop.fade{
+    display: none !important;
+}
+
+.navbar.fixed-top{
+    z-index: unset !important;
+}
+
+.disabled{
+    pointer-events: none !important;
+    opacity: 0.5;
 }
 
 
@@ -189,7 +226,6 @@ td , th {
     top: 64px;
     height: calc(100vh - 64px);
     padding: 0;
-    z-index: 1000;
 }
 #sidebar_section .mini_sidebar{
     width: 70px;
@@ -294,7 +330,8 @@ td , th {
     left: 0;
     overflow: auto;
     transition: all 300ms ease;
-    background: url(/assets/images/body_back4.png) repeat;
+    background: url(/public/assets/images/body_back4.png) no-repeat;
+    background-size: cover;
 }
 #content_section.with_sidebar{
     width: calc(100% - 250px);
