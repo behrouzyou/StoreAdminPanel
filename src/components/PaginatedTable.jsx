@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-const PaginatedTable = ({ children, data, dataInfo, additionField, numOfPAge, searchParams }) => {
+import SpinnerLoad from "./SpinnerLoad";
+const PaginatedTable = ({
+  children,
+  data,
+  dataInfo,
+  additionField,
+  numOfPAge,
+  searchParams,
+  loading,
+}) => {
   const [initData, setIninData] = useState(data);
   const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(2);
@@ -9,7 +18,6 @@ const PaginatedTable = ({ children, data, dataInfo, additionField, numOfPAge, se
 
   useEffect(() => {
     let pCount = Math.ceil(initData.length / numOfPAge);
-    console.log(pCount);
     setPageCount(pCount);
     let pArr = [];
     for (let i = 1; i <= pCount; i++) pArr = [...pArr, i];
@@ -22,10 +30,12 @@ const PaginatedTable = ({ children, data, dataInfo, additionField, numOfPAge, se
     setTableData(initData.slice(start, end));
   }, [currentPage, initData]);
 
-  useEffect(()=>{
-    setIninData(data.filter(d=>d[searchParams.searchField].includes(searchChar)))
-    setCurrentPage(1)
-  },[searchChar])
+  useEffect(() => {
+    setIninData(
+      data.filter((d) => d[searchParams.searchField].includes(searchChar))
+    );
+    setCurrentPage(1);
+  }, [searchChar, data]);
   return (
     <>
       <div className="row justify-content-between">
@@ -44,26 +54,40 @@ const PaginatedTable = ({ children, data, dataInfo, additionField, numOfPAge, se
           {children}
         </div>
       </div>
-      <table className="table table-responsive text-center table-hover table-bordered">
-        <thead className="table-secondary">
-          <tr>
-            {dataInfo.map((i) => (
-              <th key={i.field}>{i.title}</th>
-            ))}
-            {additionField ? <th>{additionField.title}</th> : null}
-          </tr>
-        </thead>
-        <tbody>
-          {tableData.map((d) => (
-            <tr key={d.id}>
+      {loading ? (
+        <SpinnerLoad colorClass={"text-primary"} />
+      ) : data.length ? (
+        <table className="table table-responsive text-center table-hover table-bordered">
+          <thead className="table-secondary">
+            <tr>
               {dataInfo.map((i) => (
-                <td key={i.field + "_" + d.id}>{d[i.field]}</td>
+                <th key={i.field}>{i.title}</th>
               ))}
-              {additionField ? <th>{additionField.elements(d.id)}</th> : null}
+              {additionField
+                ? additionField.map((a, index) => (
+                    <th key={a.id + "__" + index}>{a.title}</th>
+                  ))
+                : null}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {tableData.map((d) => (
+              <tr key={d.id}>
+                {dataInfo.map((i) => (
+                  <td key={i.field + "_" + d.id}>{d[i.field]}</td>
+                ))}
+                {additionField
+                  ? additionField.map((a, index) => (
+                      <td key={a.id + "___" + index}>{a.elements(d)}</td>
+                    ))
+                  : null}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <h5 className="text-center my-5 text-danger">هیچ رکوردی یافت نشد</h5>
+      )}
       {pages.length > 1 ? (
         <nav
           aria-label="Page navigation example"

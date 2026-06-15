@@ -1,4 +1,5 @@
-import { Routes,Route } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import { AdminContext } from '../context/adminLayoutContext';
 import Carts from './carts/Carts';
 import Brands from './brands/Brands';
@@ -15,17 +16,24 @@ import Product from './product/Product';
 import Questions from './questions/Questions';
 import Roles from './roles/Roles';
 import Users from './users/Users';
-import { useContext } from 'react';
+import Logout from './auth/Logout';
+import CategoryChildren from './category/CategoryChildren';
+import Attributes from './category/attrs/Attributes';
+import AddProduct from './product/AddProduct';
 
 const Content = () => {
     const {showSidebar} = useContext(AdminContext)
     return (
-        <section id="content_section"
+        <section id="content_section" 
         className={`bg-light py-2 px-3 ${showSidebar ? "with_sidebar" : null}`}>
           <Routes>
             <Route path='/' element={<Dashboard/>}/>
-            <Route path='/categories' element={<Category/>}/>
+            <Route path='/categories' element={<Category/>}>
+              <Route path=':categoryId' element={<CategoryChildren/>}/>
+            </Route>
+            <Route path='/categories/:categoryId/attributes' element={<Attributes/>}/>
             <Route path='/products' element={<Product/>}/>
+            <Route path='/products/add-product' element={<AddProduct/>}/>
             <Route path='/colors' element={<Colors/>}/>
             <Route path='/guaranties' element={<Guaranties/>}/>
             <Route path='/brands' element={<Brands/>}/>
@@ -38,6 +46,7 @@ const Content = () => {
             <Route path='/permissions' element={<Permissions/>}/>
             <Route path='/questions' element={<Questions/>}/>
             <Route path='/comments' element={<Comments/>}/>
+            <Route path='/logout' element={<Logout/>}/>
 
 
             <Route path='*' element={<Dashboard/>}/>

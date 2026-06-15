@@ -50,17 +50,6 @@ export const setDashboardChart = (labels , datapoints)=>{
         },
     };
 
-
-   const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx = document.getElementById('myChart').getContext('2d');
     new Chart(ctx , config)
-
-
-
-
-
-
-
-
-
-
 }

@@ -1,3 +1,4 @@
+import React from "react";
 
 const Card = ({currentValue , title, desc, icon, lastWeekValue, lastMonthValue}) => {
   return (
